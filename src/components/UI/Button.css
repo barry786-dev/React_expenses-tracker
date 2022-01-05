@@ -1,0 +1,16 @@
+.general_button {
+  font-weight: bold;
+  padding: 1rem;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  border: 1px solid #40005d;
+  background-color: #40005d;
+  color: white;
+  border-radius: 12px;
+  outline: none;
+}
+.general_button:hover,
+.general_button:focus {
+  background-color: #510674;
+  border-color: #510674;
+  color: white;
+}

@@ -1,0 +1,8 @@
+#clock {
+    color: white;
+    width: 28rem;
+    height: 2rem;
+    margin: 0.5rem auto;
+    text-align: center;
+    font: 4rem bolder;
+}

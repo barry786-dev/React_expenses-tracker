@@ -1,0 +1,262 @@
+.new-expense {
+  /* background-color: #a892ee; */
+  position: relative;
+  background-color: #c67829;
+  padding: 1rem;
+  margin: 2rem auto;
+  width: 50rem;
+  max-width: 95%;
+}
+.close_it {
+  /* vertical-align: middle; */
+  /* border: none; */
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  border-radius: 50%;
+  background: transparent;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  width: 3rem;
+  height: 3rem;
+  opacity: 0.6;
+  z-index: 5;
+}
+.close_it:focus,
+.close_it:hover {
+  opacity: 1;
+  background: rgba(128, 128, 128, 0.5);
+}
+.close_it:active {
+  background: rgba(128, 128, 128, 0.9);
+}
+/* tines of the X */
+.close_it::before,
+.close_it::after {
+  content: ' ';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 20px;
+  width: 4px;
+  background-color: currentColor;
+}
+.close_it::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.close_it::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.new-expense .button,
+.new-expense .button:focus {
+  margin: Auto;
+  padding: 1rem 2rem;
+  width: 12rem;
+}
+.sorting {
+  margin: 2rem auto 0rem auto;
+  display: flex;
+  flex-direction: row;
+  vertical-align: center;
+  justify-content: center;
+}
+.general_button.sort-button,
+.general_button.sort-button:focus {
+  margin: 0rem auto;
+  width: 3rem;
+  padding: 0;
+}
+.new-expense label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.title_label,
+.year_label {
+  margin-top: 1rem;
+}
+.new-expense input {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 20rem;
+  max-width: 100%;
+}
+
+.new-expense__form,
+.new-expense__sittings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  vertical-align: center;
+  justify-content: center;
+}
+
+.new-expense__inputs,
+.new-expense__sittings-inputs {
+  margin: 1rem auto;
+}
+.new-expense__controls,
+.new-expense__sittings-controls {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+  margin: 1rem auto;
+  align-items: center;
+  color: green;
+}
+.sitting-year__select {
+  cursor: pointer;
+  background-color: rgb(241, 241, 241);
+  border-radius: 0.5em;
+  width: 20rem;
+  font: inherit;
+  font-weight: bold;
+  padding: 0.5rem 3rem;
+  box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+  border: 1px solid #aaa;
+
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%49007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
+    linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+  background-repeat: no-repeat, repeat;
+  /* arrow icon position (1em from the right, 50% vertical) , then gradient position*/
+  background-position: right 0.7em top 50%, 0 0;
+  /* icon size, then gradient */
+  background-size: 0.65em auto, 100%;
+  appearance: none;
+}
+.sitting-year__select:hover {
+  border-color: #888;
+}
+/* Focus style */
+.sitting-year__select:focus {
+  border-color: #aaa;
+  /* It'd be nice to use -webkit-focus-ring-color here but it doesn't work on box-shadow */
+  box-shadow: 0 0 1px 1px rgba(246, 250, 255, 0.7);
+  color: #222;
+  outline: none;
+}
+@media (min-width: 580px) {
+  .new-expense__form,
+  .new-expense__sittings-form {
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    vertical-align: center;
+  }
+  .new-expense__inputs,
+  .new-expense__sittings-inputs {
+    margin: auto 1rem;
+  }
+  .new-expense__controls,
+  .new-expense__sittings-controls {
+    justify-content: center;
+    flex-direction: column;
+    margin: 1rem 1rem 1rem 5rem;
+  }
+  .new-expense .new-expense__sittings-controls button {
+    margin : 1rem auto;
+  }
+  .new-expense button {
+    font: inherit;
+    cursor: pointer;
+    padding: 1rem 2rem;
+    border: 1px solid #40005d;
+    background-color: #40005d;
+    color: white;
+    border-radius: 12px;
+    width: 12rem;
+  }
+}
+.new-expense .sittings-button,
+.new-expense .sittings-button:focus {
+  width: 8rem;
+  margin: 1rem auto;
+}
+.new-expense .category-button,
+.new-expense .category-button:focus {
+  width: 15rem;
+  margin: 1rem auto;
+}
+/* 
+.new-expense__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.new-expense__control label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.new-expense__control input {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 20rem;
+  max-width: 100%;
+}
+
+.new-expense__actions {
+  text-align: right;
+}
+ */
+/* .close_it {
+  width: 2rem;
+  height: 2rem;
+  margin-left: 90%;
+  padding: 1rem;
+}
+.close_it:hover {
+  color: white;
+  cursor: pointer;
+} */
+
+/* .new-expense button.alternative {
+  color: #220131;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.new-expense button.alternative:hover,
+.new-expense button.alternative:active {
+  background-color: #ddb3f8;
+} */
+
+/* .close_it {
+  position: relative;
+  left: 42rem;
+  top: 1rem;
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+  z-index: 5;
+}
+.close_it:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.close_it:before,
+.close_it:after {
+  position: absolute;
+  right: 0rem;
+  content: ' ';
+  height: 25px;
+  width: 2px;
+  background-color: #333;
+}
+.close_it:before {
+  transform: rotate(45deg);
+}
+.close_it:after {
+  transform: rotate(-45deg);
+} */

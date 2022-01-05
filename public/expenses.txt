@@ -1,0 +1,1 @@
+[{"id":"e1","title":"Toilet Paper","amount":94.12,"date":"2020-08-13T22:00:00.000Z"},{"id":"e2","title":"New TV","amount":799.49,"date":"2021-03-11T23:00:00.000Z"},{"id":"e3","title":"Car Insurance","amount":294.67,"date":"2021-03-27T23:00:00.000Z"},{"id":"e4","title":"New Desk (Wooden)","amount":450,"date":"2021-06-11T22:00:00.000Z"}]
