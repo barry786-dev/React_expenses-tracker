@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 import ExpensesFilter from '../Expenses/ExpensesFilter';
+
 import './ControlExpense.css';
 let list_button_value = 'Hide-List';
 /* ****************************** */
@@ -286,7 +287,7 @@ const ControlExpense = ({
             onChangeFilter={filterChangeHandler}
             mindate={mindate}
           />
-          <Button type='button' className='button' onClick={listOnClickHandler}>
+          <Button type='button' className='button'>
             {list_button_value}
           </Button>
           <Button

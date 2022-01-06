@@ -172,7 +172,7 @@ function ExpensesApp() {
     );
   return (
     <Card className='expenses'>
-      {/* <Clock /> */}
+      <Clock />
       {error && (
         <ErrorModal
           confirmForm={error.confirmForm}
