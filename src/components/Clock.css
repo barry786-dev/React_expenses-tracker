@@ -2,7 +2,20 @@
     color: white;
     width: 28rem;
     height: 2rem;
-    margin: 0.5rem auto;
+    margin: 3rem auto;
     text-align: center;
     font: 4rem bolder;
+}
+@media (min-width: 500px) {
+  #clock {
+    margin: 0.5rem auto;
+}
+}
+@media (max-width: 270px) {
+  #clock {
+    font: 3rem bolder;
+    margin: 2rem 0rem;
+    text-align: left;
+    
+}
 }

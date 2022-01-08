@@ -8,12 +8,16 @@
   border-radius: 12px;
   outline: none;
 }
-.general_button:hover,
-.general_button:focus {
+.general_button:hover{
   background-color: #510674;
   border-color: #510674;
   color: white;
 }
+/* .general_button:focus {
+  background-color: #B5D63D;
+  border-color: #510674;
+  color: white;
+} */
 
 .js-tilt-glare {
   border-radius: 12px;

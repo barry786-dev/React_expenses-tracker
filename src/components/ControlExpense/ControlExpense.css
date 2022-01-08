@@ -141,7 +141,7 @@
   color: #222;
   outline: none;
 }
-@media (min-width: 580px) {
+@media (min-width: 500px) {
   .new-expense__form,
   .new-expense__sittings-form {
     flex-direction: row;

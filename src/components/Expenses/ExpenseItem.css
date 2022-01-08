@@ -1,6 +1,7 @@
 .expense-item {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+  justify-content: space-between; /*new added*/
   align-items: center;
   padding: 0.7rem;
   margin: 1.6rem auto;
@@ -51,11 +52,29 @@
 }
 .close_it.delete_expense {
   position: absolute;
-  left: -3rem;
-  top:0rem;
+  left: -1.5rem;
+  top: 4rem;
   color: red;
 }
-@media (min-width: 580px) {
+#expense_list {
+  list-style: none;
+}
+#category_div {
+  position: relative;
+}
+#category_div .category_innerdiv {
+  position: absolute;
+  top:2.5rem;
+  padding: 0.5rem;
+  width: 100%;
+  text-align: center;
+  color: rgb(243, 65, 65);
+  font-weight: bolder;
+}
+@media (min-width: 500px) {
+  .expense-item {
+    flex-direction: row;
+  }
   .expense-item__description {
     flex-direction: row;
     align-items: center;
@@ -70,4 +89,14 @@
     font-size: 2rem;
     padding: 0.8rem 2rem;
   }
+  .close_it.delete_expense {
+  position: absolute;
+  left: -3rem;
+  top: 0rem;
+  color: red;
+  
+}
+#category_div .category_innerdiv {
+  top:0;
+}
 }

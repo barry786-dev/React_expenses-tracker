@@ -1,33 +1,28 @@
-.expenses-filter {
+.expenses-category {
   display: flex;
-  flex-direction: row;
-  gap: 0;
+  flex-direction: column;
   width: 100%;
-  align-items: center;
   justify-content: space-between;
-  margin: 1rem 0;
   box-shadow: none;
 }
 
-.new-expense__controls .expenses-filter label {
+.new-expense__controls .expenses-category label {
   font-weight: bolder;
-  margin-bottom: 0;
-  margin-left: -7rem;
   color: black;
   z-index: 3;
   background: linear-gradient(to bottom, #c67829 0%);
   padding: 0;
 }
-.expenses-filter select option {
-  background:#e6a96c;
+.expenses-category select option {
+  background: #e6a96c;
 }
-.expenses-filter select {
+.expenses-category select {
   cursor: pointer;
   /*background-color: #e5e5e5;*/
   /* linear-gradient(to bottom, #C67829 0%, #e5e5e5 100%); */
   /* rgb(241, 241, 241) */
-  border-radius: 0.6em;
-  width: 12rem;
+  border-radius: 6px;
+  width: 20rem;
   font: inherit;
   font-weight: bold;
   padding: 0.5rem 3rem;
@@ -43,11 +38,11 @@
   background-size: 0.65em auto, 100%;
   appearance: none;
 }
-.expenses-filter select:hover {
+.expenses-category select:hover {
   border-color: #888;
 }
 /* Focus style */
-.expenses-filter select:focus {
+.expenses-category select:focus {
   border-color: #aaa;
   /* It'd be nice to use -webkit-focus-ring-color here but it doesn't work on box-shadow */
   box-shadow: 0 0 1px 1px rgba(246, 250, 255, 0.7);
@@ -56,7 +51,7 @@
 }
 
 @media (min-width: 500px) {
-  .expenses-filter {
+  .expenses-category {
     flex-direction: column;
   }
 }

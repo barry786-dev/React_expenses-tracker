@@ -2,23 +2,29 @@ import React, { useRef, useState } from 'react';
 import './ExpenseItem.css';
 import DateDiv from '../Date/DateDiv';
 import Button from '../UI/Button';
+// global variabels will containes the preveious values inside the current expense so i can retrive them if something went wrong with the user and he cancel the editing after he has aready over write the values
 let prevTitle;
 let prevAmount;
+let prevCategory;
 const ExpenseItem = ({
   expense,
-  editExpense,
+  editExpense, //prop will triger editExpenseHandler() inside ExpensesAppjs
   deleteExpense,
   onError,
   currency,
+  categories,
 }) => {
-  const [editable, setEditable] = useState(false);
-  const [editTitle, setEditTitle] = useState('Edit');
-  const [node, setNode] = useState('');
+  const [editable, setEditable] = useState(false); // state will effect the contentEditable attribute in some of our html elements below
+  const [editTitle, setEditTitle] = useState('Edit'); // state to toggle the title of edit button so it can function difrently according to its title (either save the changes(if the title is Done)or start allow editing ifthe title is (Edit))
+  const [node, setNode] = useState(''); // will add string value ('h2' or 'span'  or 'div') to know to which element tag i need to send the focus and highlighting.
   const myTitle = useRef(null);
   const myAmount = useRef(null);
-
+  const myCatogery = useRef(null);
+  // collect the elements which we are going to edit its values (title, amount, category)
   const titleNode = myTitle.current;
   const amountNode = myAmount.current;
+  const catogeryNode = myCatogery.current;
+  //this is statment will check which node we are standing on it to return the foucs to it and highlight it if we try to leave it with wrong value
   if (editable) {
     if (node === 'h2') {
       titleNode.focus();
@@ -26,11 +32,10 @@ const ExpenseItem = ({
     } else if (node === 'span') {
       amountNode.focus();
       highlight(amountNode);
+    } else if (node === 'div') {
+      catogeryNode.focus();
+      highlight(catogeryNode);
     }
-    /* titleNode.focus();
-    highlight(titleNode); */
-    /* amountNode.focus();
-    highlight(amountNode); */
   }
 
   const EditclickHandler = () => {
@@ -40,9 +45,11 @@ const ExpenseItem = ({
       setNode('h2');
       prevTitle = myTitle.current.innerText;
       prevAmount = myAmount.current.innerText;
+      prevCategory = myCatogery.current.innerText;
     } else if (editTitle === 'Done') {
       const newTitle = titleNode.innerText.trim();
       const newAmount = amountNode.innerText;
+      const newCategory = catogeryNode.innerText;
       if (newTitle === '') {
         onError({
           title: 'title is wrong',
@@ -69,10 +76,16 @@ const ExpenseItem = ({
         setNode('span');
         /* amountNode.focus();
         highlight(amountNode); */
+      } else if (categories.indexOf(newCategory) < 0) {
+        onError({
+          title: 'category is wrong',
+          message: `This category : ${newCategory} is not exist in your catogry options, if you like to edit category of an expense with catogry whch you do not add it before then you need first to go to the sittings and add his new catogry, and then edit your expense according to it, please cancel the edit mood by press X button on your expense line and go to the sittings to add your new category and then come back to your expense to edit it`,
+        });
+        setNode('div');
       } else {
         setEditTitle(() => 'Edit');
         setEditable(() => false);
-        editExpense(newTitle, newAmount, expense.id); //editExpense is a prop
+        editExpense(newTitle, newAmount, newCategory, expense.id); //editExpense is a prop
       }
     }
   };
@@ -88,7 +101,7 @@ const ExpenseItem = ({
     }
   };
   const deleteExpenseHandler = () => {
-    const modalDataDeleted=()=>{
+    const modalDataDeleted = () => {
       onError({
         title: 'Data deleted successfully!',
         message: `Data deleted successfully!
@@ -96,18 +109,19 @@ const ExpenseItem = ({
         Amount : ${expense.amount}$
         Date : ${expense.date}`,
       });
-    }
-    const modalDataDeleteCancel=()=>{
+    };
+    const modalDataDeleteCancel = () => {
       onError({
         title: 'Delete action is Cancelled!',
         message: 'Delete action is Cancelled!',
       });
-    }
+    };
     if (editTitle === 'Done') {
       setEditTitle('Edit');
       setEditable(false);
       myAmount.current.innerText = prevAmount;
       myTitle.current.innerText = prevTitle;
+      myCatogery.current.innerText = prevCategory;
     } else if (editTitle === 'Edit') {
       onError({
         title: 'Attention , Delete Action',
@@ -117,31 +131,44 @@ const ExpenseItem = ({
         afterExcuteAction: modalDataDeleted,
         cancelExcuteAction: modalDataDeleteCancel,
       });
-    } 
+    }
   };
   return (
-    <li className='expense-item'>
-      <DateDiv
-        dateObj={new Date(expense.date)}
-        onTryingToEdit={dateEditingHandler}
-      />
-      <div className='expense-item__description'>
-        <h2 contentEditable={editable} ref={myTitle}>
-          {expense.title}
-        </h2>
-        <div className='expense-item__amount'>
-          <span contentEditable={editable} ref={myAmount}>
-            {expense.amount}
-          </span>
-          <span contentEditable='false'>{currency}</span>
+    <li id='expense_list'>
+      <div id='category_div'>
+        <div
+          className='category_innerdiv'
+          contentEditable={editable}
+          ref={myCatogery}
+        >
+          {expense.category || 'No category'}
         </div>
       </div>
-      <Button onClick={EditclickHandler}>{editTitle}</Button>
-      <div id='delete_expense_wrapper'>
-        <div
-          className='close_it delete_expense'
-          onClick={deleteExpenseHandler}
-        ></div>
+      <div className='expense-item'>
+        <DateDiv
+          dateObj={new Date(expense.date)}
+          onTryingToEdit={dateEditingHandler}
+        />
+        <div className='expense-item__description'>
+          <h2 contentEditable={editable} ref={myTitle}>
+            {expense.title}
+          </h2>
+          <div className='expense-item__amount'>
+            <span contentEditable={editable} ref={myAmount}>
+              {expense.amount}
+            </span>
+            <span contentEditable='false'>{currency}</span>
+          </div>
+        </div>
+        <Button onClick={EditclickHandler} className='expense_button'>
+          {editTitle}
+        </Button>
+        <div id='delete_expense_wrapper'>
+          <div
+            className='close_it delete_expense'
+            onClick={deleteExpenseHandler}
+          ></div>
+        </div>
       </div>
     </li>
   );
@@ -166,22 +193,6 @@ const highlight = (node) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* let titleNode;
   let amountNode;
   useEffect(() => {
@@ -193,7 +204,7 @@ const highlight = (node) => {
     }
   }, [editable]); */
 
-  /* else if (
+/* else if (
       window.confirm(
         'Are you sure you want to delete completly this expense?'
       ) === true

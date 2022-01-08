@@ -14,12 +14,11 @@
 .expenses button,
 .expenses button:focus {
   display: block;
-  margin: 4rem auto;
+  margin: 0rem auto;
   font: inherit;
   cursor: pointer;
   padding: 1rem 2rem;
 }
-
 
 @keyframes blink {
   0% {
@@ -30,5 +29,11 @@
   }
   100% {
     opacity: 1;
+  }
+}
+@media (min-width: 500px) {
+  .expenses button,
+  .expenses button:focus {
+    margin: 4rem auto;
   }
 }

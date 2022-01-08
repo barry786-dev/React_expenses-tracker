@@ -1,0 +1,92 @@
+[
+  {
+    "category": "furniture",
+    "title": "kitchen table",
+    "id": "1641672149586",
+    "amount": 185,
+    "date": "2021-09-08"
+  },
+  {
+    "title": "new thing",
+    "amount": 1000,
+    "date": "2021-03-03",
+    "id": "1641377995085",
+    "category": "electronics"
+  },
+  {
+    "title": "my daughter car",
+    "amount": 270,
+    "date": "2021-05-12",
+    "id": "1641065491268"
+  },
+  {
+    "title": "lactoz-free milk",
+    "amount": 25,
+    "date": "2021-06-15",
+    "id": "1641666605719",
+    "category": "grocery"
+  },
+  {
+    "title": "here is test",
+    "id": "1641378522686",
+    "amount": 200,
+    "date": "2021-11-05"
+  },
+  {
+    "title": "my mother car",
+    "amount": 240,
+    "date": "2021-11-15",
+    "id": "1641065520627"
+  },
+  {
+    "title": "new car",
+    "amount": 200,
+    "date": "2022-01-01",
+    "id": "1641117670502"
+  },
+  {
+    "title": "test car",
+    "id": "1641326349621",
+    "amount": 150,
+    "date": "2022-01-03"
+  },
+  {
+    "title": "something",
+    "amount": 200,
+    "date": "2022-01-05",
+    "id": "1641377901336"
+  },
+  {
+    "title": "office black chair",
+    "id": "1641666517367",
+    "category": "general",
+    "amount": 135,
+    "date": "2022-01-06"
+  },
+  {
+    "title": "test new",
+    "id": "1641660227980",
+    "category": "general",
+    "amount": 200,
+    "date": "2022-01-07"
+  },
+  {
+    "title": "new test",
+    "id": "1641660116012",
+    "amount": 300,
+    "date": "2022-01-07"
+  },
+  {
+    "title": "new test",
+    "id": "1641660040647",
+    "amount": 200,
+    "date": "2022-01-07"
+  },
+  {
+    "title": "again",
+    "amount": 150,
+    "date": "2022-01-08",
+    "id": "1641660253509",
+    "category": "grocery"
+  }
+]

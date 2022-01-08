@@ -2,9 +2,10 @@ import React, { useState, useRef } from 'react';
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 import ExpensesFilter from '../Expenses/ExpensesFilter';
-
+import ExpensesCategory from '../Expenses/ExpensesCategory';
 import './ControlExpense.css';
 let list_button_value = 'Hide-List';
+let category_to_add = 'general';
 /* ****************************** */
 /* ****************************** */
 // controlExpenses will be response to catch the user actions like submit new expense or filter, or hide some UI components , or sorting the expenses.
@@ -21,11 +22,13 @@ const ControlExpense = ({
   onSittingSubmit,
   downloadExpensesFile,
   restoreData,
+  onNewCategoryAdd,
+  categories,
 }) => {
   /* ****************************** */
   /* ****************************** */
   const filterChangeHandler = (selectedYear) => {
-    onFilter(selectedYear); //onFilter is a prop will triger FilterHandler() in ExpensesApp.js
+    onFilter([selectedYear,null]); //onFilter is a prop will triger FilterHandler() in ExpensesApp.js
   };
   /* ****************************** */
   /* ****************************** */
@@ -46,16 +49,27 @@ const ControlExpense = ({
       });
     }
     setNewexpense((prev) => {
-      return { ...prev, id: Date.now().toString() };
+      return { ...prev, id: Date.now().toString()};
     });
   };
   /* ****************************** */
+  const onChangeCategoryHandler = (category) => {
+    setNewexpense((prev) => {
+      return { ...prev, category: category };
+    });
+    category_to_add = category;
+    onFilter([null, category]);
+    /* setNewexpense((prev) => {
+      return { ...prev, category: category };
+    }); */
+  };
   /* ****************************** */
   const passNewExpenseHandler = (e) => {
     //this function will check if the newexpense state has proper new exense without any mistakes from the user, then pass this new expense to onSubmit as parameter, finally will reset the state of newexpense to empty the field of the user form.
     e.preventDefault();
     const checkvalidty = ['title', 'amount', 'id', 'date'];
     if (checkvalidty.every((item) => newexpense.hasOwnProperty(item))) {
+      console.log(newexpense);
       onSubmit(newexpense); //onSubmit is props will triger submitNewExpenseHandler() in ExpensesApp.js
     } else {
       //here you can check for the invalid entieres and alarm the user in details
@@ -99,10 +113,12 @@ const ControlExpense = ({
     //setSittingsValues([e.target.year.value, e.target.currency.value]);
   };
   const myCategoryInput = useRef(null);
-  const categoryArr = [];
-  const addCategoryHandler = () => {
-    categoryArr.push(myCategoryInput.current.value);
-    console.log(categoryArr);
+  //const categoryArr = [];
+
+  const addCategoryClickHandler = () => {
+    //categoryArr.push(myCategoryInput.current.value);
+    onNewCategoryAdd(myCategoryInput.current.value);
+    myCategoryInput.current.value = '';
   };
   const downloadExpensesonClickHandler = () => {
     downloadExpensesFile();
@@ -200,7 +216,7 @@ const ControlExpense = ({
                 <Button
                   type='button'
                   className='category-button'
-                  onClick={addCategoryHandler}
+                  onClick={addCategoryClickHandler}
                 >
                   Add category
                 </Button>
@@ -253,6 +269,11 @@ const ControlExpense = ({
             value={newexpense.amount}
             onChange={expenseChangeHandler}
           />
+          <ExpensesCategory
+            categories={categories}
+            onChangeCategory={onChangeCategoryHandler}
+            slectedCategory={newexpense.category}
+          />
           <label htmlFor='date'>Date</label>
           <input
             type='date'
@@ -287,7 +308,7 @@ const ControlExpense = ({
             onChangeFilter={filterChangeHandler}
             mindate={mindate}
           />
-          <Button type='button' className='button'>
+          <Button type='button' className='button' onClick={listOnClickHandler}>
             {list_button_value}
           </Button>
           <Button

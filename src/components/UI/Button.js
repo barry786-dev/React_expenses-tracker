@@ -2,7 +2,7 @@ import React , {useRef , useEffect} from 'react';
 import VanillaTilt from 'vanilla-tilt';
 import './Button.css';
 const Button = ({ onClick, children, className, type }) => {
-  const classes = `general_button ${className} js-tilt-glare`;
+  const classes = ` ${className} general_button js-tilt-glare`;
   const sittingsIcon = useRef();
   useEffect(() => {
     const sittingsIconNode = sittingsIcon.current;

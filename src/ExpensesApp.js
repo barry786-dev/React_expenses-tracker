@@ -17,12 +17,33 @@ const useStateWithLocalStorage = (localStorageKey, defaultValue = []) => {
   );
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(state));
-  }, [localStorageKey,state]);
+  }, [localStorageKey, state]);
 
   return [state, setState];
 };
 
 function ExpensesApp() {
+  const [categories, setCategory] = useState(
+    JSON.parse(localStorage.getItem('categories')) || ['general']
+  );
+  const onNewCategoryAdd = (newcategory) => {
+    let existcategory = false;
+    categories.forEach((item) => {
+      if (item === newcategory) existcategory = true;
+    });
+    if (existcategory) {
+      errorHandler({
+        title: 'repeated category item',
+        message: `you already have ${newcategory} as category`,
+      });
+      return;
+    } else {
+      setCategory([...categories, newcategory]);
+    }
+  };
+  useEffect(() => {
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }, [categories]);
   /* ****************************** */
   const [expenses, setExpenses] = useStateWithLocalStorage('data'); // a state to save the whole expenses data, it is an array of objects
 
@@ -46,13 +67,14 @@ function ExpensesApp() {
       .then((data) => setExpenses(data))
       .catch((err) => console.log('Error Reading data' + err));
   };
+
   /* ****************************** */
   const [error, setError] = useState();
   const errorHandler = (errorData) => {
     setError(errorData);
   };
   const [sittingsValues, setSittingsValues] = useState(
-    JSON.parse(localStorage.getItem('expensesSittings')) || [(2015, '&#36;')]
+    JSON.parse(localStorage.getItem('expensesSittings')) || [2015, '&#36;']
   );
   const sittigSubmitHadler = (sittingsValues) => {
     setSittingsValues(sittingsValues);
@@ -64,12 +86,25 @@ function ExpensesApp() {
 
   /* ****************************** */
   // const [filterdExpenses, setFilterExpenses] = useState([]);
-  const [filteredYear, setFilteredYear] = useState(
-    new Date().getFullYear().toString()
-  ); // a state to save the filtered year which be chosed by the user in ExpensesFilter.js and lifted up to ControlExpense.js then lifted up again to here.
-  const FilterHandler = (selectedYear) => {
+  const [filteredOptions, setFilteredOptions] = useState([
+    new Date().getFullYear().toString(),
+    'general',
+  ]); // a state to save the filtered year which be chosed by the user in ExpensesFilter.js and lifted up to ControlExpense.js then lifted up again to here.
+  const FilterHandler = (selectedoptions) => {
+    /* if (selectedYear instanceof Date) {
+      console.log(typeof selectedYear);
+    } */
+
     //selected year is lifted up value come through ControlExpense.js which it took it throw ExpenseFilter.js
-    setFilteredYear(() => selectedYear);
+    if (selectedoptions[0]) {
+      const filteredOptions_copy = [...filteredOptions];
+      filteredOptions_copy[0] = selectedoptions[0];
+      setFilteredOptions(() => filteredOptions_copy);
+    } else if (selectedoptions[1]) {
+      const filteredOptions_copy = [...filteredOptions];
+      filteredOptions_copy[1] = selectedoptions[1];
+      setFilteredOptions(() => filteredOptions_copy);
+    }
   };
   /* ****************************** */
   /* ****************************** */
@@ -106,11 +141,16 @@ function ExpensesApp() {
   };
   /* ****************************** */
   /* ****************************** */
-  const editExpenseHandler = (newTitle, newAmount, expenseId) => {
+  const editExpenseHandler = (newTitle, newAmount, newCategory, expenseId) => {
     setExpenses((prev) => {
       return expenses.map((item) => {
         if (item.id === expenseId) {
-          return { ...item, title: newTitle, amount: +newAmount };
+          return {
+            ...item,
+            title: newTitle,
+            amount: +newAmount,
+            category: newCategory,
+          };
         }
         return item;
       });
@@ -124,9 +164,20 @@ function ExpensesApp() {
   /* ****************************** */
   /* ****************************** */
   /* ****************************** */
-  const filterdExpenses = expenses.filter(
-    (item) => item.date.substring(0, 4) === filteredYear
-  );
+  const filterdExpensesFunction = () => {
+    if (filteredOptions[1] === 'general' || !filteredOptions[1]) {
+      return expenses.filter(
+        (item) => item.date.substring(0, 4) === filteredOptions[0]
+      );
+    } else {
+      return expenses.filter(
+        (item) =>
+          item.date.substring(0, 4) === filteredOptions[0] &&
+          item.category === filteredOptions[1]
+      );
+    }
+  };
+  const filterdExpenses = filterdExpensesFunction();
   /* ****************************** */
   /* ****************************** */
   const sortExpensesByDate = (sort_direction) => {
@@ -159,6 +210,7 @@ function ExpensesApp() {
           editExpense={editExpenseHandler}
           deleteExpense={deleteExpenseHandler}
           onError={errorHandler}
+          categories={categories}
         />
       );
     });
@@ -200,7 +252,7 @@ function ExpensesApp() {
             <ControlExpense
               onSubmit={submitNewExpenseHandler}
               onFilter={FilterHandler}
-              selectedYear={filteredYear}
+              selectedYear={filteredOptions[0]}
               sittingsValues={sittingsValues}
               hideShowChart={hideShowChart}
               hideControls={hideControlsHandler}
@@ -210,6 +262,8 @@ function ExpensesApp() {
               onSittingSubmit={sittigSubmitHadler}
               downloadExpensesFile={() => saveFile(blob)}
               restoreData={restoreData}
+              onNewCategoryAdd={onNewCategoryAdd}
+              categories={categories}
             />
           )}
           {IsCharted && (
