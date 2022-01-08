@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Clock from './components/Clock';
+import Clock from './components/UI/Clock';
 // import ExpensesData from './Data/ExpensesData';
 import Card from './components/UI/Card';
 import Button from './components/UI/Button';
