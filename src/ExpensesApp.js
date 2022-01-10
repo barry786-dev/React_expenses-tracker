@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Clock from './components/UI/Clock';
-// import ExpensesData from './Data/ExpensesData';
 import Card from './components/UI/Card';
 import Button from './components/UI/Button';
 import ControlExpense from './components/ControlExpense/ControlExpense';
@@ -9,8 +8,7 @@ import ExpenseItem from './components/Expenses/ExpenseItem';
 import ErrorModal from './components/UI/ErrorModal';
 import './ExpensesApp.css';
 //import { writeJsonFile } from 'write-json-file';
-// ExpensesApp is the head componenet, inside it the other componenets will be controled when to appear to the user ,  data will be fetched , yearly filtered, added , edited , deleted , saved back again
-// let sorted = 'newest_first';
+// ExpensesApp is the head componenet, inside it the other componenets will be controled when to appear to the user ,  data will be fetched , yearly filtered, added , edited , deleted , saved back again.
 const useStateWithLocalStorage = (localStorageKey, defaultValue = []) => {
   const [state, setState] = useState(
     JSON.parse(localStorage.getItem(localStorageKey)) || defaultValue
@@ -21,11 +19,24 @@ const useStateWithLocalStorage = (localStorageKey, defaultValue = []) => {
 
   return [state, setState];
 };
-
+// the parrent component start here ExpensesApp
 function ExpensesApp() {
-  const [categories, setCategory] = useState(
-    JSON.parse(localStorage.getItem('categories')) || ['general']
+  /* ****************************** */
+  const [expenses, setExpenses] = useStateWithLocalStorage('data'); // a state to save the whole expenses data, it is an array of objects.
+  const [categories, setCategory] = useStateWithLocalStorage('categories', [
+    'general',
+  ]);
+  const [settingsValues, setSettingsValues] = useStateWithLocalStorage(
+    'expensesSittings',
+    [2015, '&#36;']
   );
+  /* ****************************** */
+  /* ****************************** */
+  const settigSubmitHadler = (settingsValues) => {
+    setSettingsValues(settingsValues); //if settingsvaluechanged the useeffect will add the new value to local
+  };
+  /* ****************************** */
+  //this function onNewCategoryAdd will pass it as prop to ControlExpense.js it will be triggerd when the user click o add ategory button in the sittengs panel
   const onNewCategoryAdd = (newcategory) => {
     let existcategory = false;
     categories.forEach((item) => {
@@ -41,17 +52,20 @@ function ExpensesApp() {
       setCategory([...categories, newcategory]);
     }
   };
-  useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(categories));
-  }, [categories]);
   /* ****************************** */
-  const [expenses, setExpenses] = useStateWithLocalStorage('data'); // a state to save the whole expenses data, it is an array of objects
-
+  /* ****************************** */
+  /* ****************************** */
+  //savefile and restore Data are two fuctions response to save the restore data from the hardDisk
   const saveFile = async (blob) => {
     const a = document.createElement('a');
     a.download = '/my-expenses.txt';
     a.href = URL.createObjectURL(blob);
+    //The uniform resource locators methode URL.createObjectURL() is a static method creates a DOMString containing a URL representing the object given in the parameter.
+    // The URL lifetime is tied to the document in the window on which it was created. The new object URL represents the specified File object or Blob object.
     a.addEventListener('click', (e) => {
+      //To release an object URL, call revokeObjectURL().
+      //Call this method when you've finished using an object URL to let the browser know not to keep the reference to the file any longer.
+      //a.click() on a DOM element simulates a click on the element, instead of propagation of the click event, so it's directly sent to the browser.it would be a little bit safer to move revoking of URL object to another event cycle using a timer:
       setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
     });
     a.click();
@@ -60,52 +74,55 @@ function ExpensesApp() {
   const blob = new Blob([JSON.stringify(obj, null, 2)], {
     type: 'application/json',
   });
-
+  /* ****************************** */
   const restoreData = () => {
     fetch('./_my-expenses.txt')
       .then((response) => response.json())
       .then((data) => setExpenses(data))
       .catch((err) => console.log('Error Reading data' + err));
   };
-
   /* ****************************** */
-  const [error, setError] = useState();
+  /* ****************************** */
+  /* ****************************** */
+  const [error, setError] = useState(); //is a state take object of error information this inormation will decde the form of this error if it is alert or confirmtion for whch will take function to excute them if the user confirm {confirmform,Excueaction,afterexcute, cancelexcute,title,message,message1}
   const errorHandler = (errorData) => {
     setError(errorData);
   };
-  const [sittingsValues, setSittingsValues] = useState(
-    JSON.parse(localStorage.getItem('expensesSittings')) || [2015, '&#36;']
-  );
-  const sittigSubmitHadler = (sittingsValues) => {
-    setSittingsValues(sittingsValues);
-  };
-  useEffect(() => {
-    localStorage.setItem('expensesSittings', JSON.stringify(sittingsValues));
-  }, [sittingsValues]);
   /* ****************************** */
-
   /* ****************************** */
-  // const [filterdExpenses, setFilterExpenses] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([
     new Date().getFullYear().toString(),
     'general',
-  ]); // a state to save the filtered year which be chosed by the user in ExpensesFilter.js and lifted up to ControlExpense.js then lifted up again to here.
+  ]); // a state to save array of filtered options which be choosed by the user in ExpensesFilter.js and lifted up to ControlExpense.js then lifted up again to here.
   const FilterHandler = (selectedoptions) => {
     /* if (selectedYear instanceof Date) {
       console.log(typeof selectedYear);
     } */
-
     //selected year is lifted up value come through ControlExpense.js which it took it throw ExpenseFilter.js
+    const filteredOptions_copy = [...filteredOptions];
     if (selectedoptions[0]) {
-      const filteredOptions_copy = [...filteredOptions];
       filteredOptions_copy[0] = selectedoptions[0];
       setFilteredOptions(() => filteredOptions_copy);
     } else if (selectedoptions[1]) {
-      const filteredOptions_copy = [...filteredOptions];
       filteredOptions_copy[1] = selectedoptions[1];
       setFilteredOptions(() => filteredOptions_copy);
     }
   };
+  /* ****************************** */
+  const filterdExpensesFunction = () => {
+    if (filteredOptions[1] === 'general' || !filteredOptions[1]) {
+      return expenses.filter(
+        (item) => item.date.substring(0, 4) === filteredOptions[0]
+      );
+    } else {
+      return expenses.filter(
+        (item) =>
+          item.date.substring(0, 4) === filteredOptions[0] &&
+          item.category === filteredOptions[1]
+      );
+    }
+  };
+  const filterdExpenses = filterdExpensesFunction();
   /* ****************************** */
   /* ****************************** */
   //controlsPanel && hideControls are behinde the logic of what shoud appear on the secreen according to the user perferences
@@ -164,22 +181,6 @@ function ExpensesApp() {
   /* ****************************** */
   /* ****************************** */
   /* ****************************** */
-  const filterdExpensesFunction = () => {
-    if (filteredOptions[1] === 'general' || !filteredOptions[1]) {
-      return expenses.filter(
-        (item) => item.date.substring(0, 4) === filteredOptions[0]
-      );
-    } else {
-      return expenses.filter(
-        (item) =>
-          item.date.substring(0, 4) === filteredOptions[0] &&
-          item.category === filteredOptions[1]
-      );
-    }
-  };
-  const filterdExpenses = filterdExpensesFunction();
-  /* ****************************** */
-  /* ****************************** */
   const sortExpensesByDate = (sort_direction) => {
     setExpenses((prev) =>
       [...prev].sort((a, b) => {
@@ -190,27 +191,21 @@ function ExpensesApp() {
         }
       })
     );
-
-    /* if (sorted === 'newest_first') {
-      sorted = 'oldest_first';
-    } else {
-      sorted = 'newest_first';
-    } */
   };
   /* ****************************** */
   /* ****************************** */
   /* ****************************** */
-  let expensesItems = filterdExpenses //here is methode to filter and show the expenses inside our data by generate one <ExpenseItem/> component for each expense
+  let expensesItems = filterdExpenses //here is methode to take the filtered data and show the expenses inside our data by generate one <ExpenseItem/> component for each expense
     .map((item) => {
       return (
         <ExpenseItem
-          expense={item}
-          currency={sittingsValues[1]}
+          expense={item} //we pass each invidual expense item
+          currency={settingsValues[1]} // the used currency
           key={item.id}
           editExpense={editExpenseHandler}
           deleteExpense={deleteExpenseHandler}
           onError={errorHandler}
-          categories={categories}
+          categories={categories} //i have to see why i passed the whole categories 
         />
       );
     });
@@ -253,13 +248,13 @@ function ExpensesApp() {
               onSubmit={submitNewExpenseHandler}
               onFilter={FilterHandler}
               selectedYear={filteredOptions[0]}
-              sittingsValues={sittingsValues}
+              settingsValues={settingsValues}
               hideShowChart={hideShowChart}
               hideControls={hideControlsHandler}
               hideShowList={hideShowList}
               sortExpensesByDate={sortExpensesByDate}
               onError={errorHandler}
-              onSittingSubmit={sittigSubmitHadler}
+              onSettingSubmit={settigSubmitHadler}
               downloadExpensesFile={() => saveFile(blob)}
               restoreData={restoreData}
               onNewCategoryAdd={onNewCategoryAdd}
@@ -269,7 +264,7 @@ function ExpensesApp() {
           {IsCharted && (
             <Chart
               expensesToChart={filterdExpenses}
-              currency={sittingsValues[1]}
+              currency={settingsValues[1]}
             />
           )}
           {IsListed && <ul>{expensesItems}</ul>}
@@ -320,6 +315,19 @@ export default ExpensesApp;
     "id": "1641065520627"
   }
 ] */
+
+/* const [categories, setCategory] = useState(
+    JSON.parse(localStorage.getItem('categories')) || ['general']
+  );
+  useEffect(() => {
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }, [categories]); */
+/*  const [settingsValues, setSettingsValues] = useState(
+    JSON.parse(localStorage.getItem('expensesSettings')) || [2015, '&#36;']
+  );
+  useEffect(() => {
+    localStorage.setItem('expensesSettings', JSON.stringify(settingsValues));
+  }, [settingsValues]); */
 
 /* const editHandler = (expenseitem) => {
     const editedExpnses = expenses.map((item) => {

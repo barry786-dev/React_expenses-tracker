@@ -1,9 +1,10 @@
 .expense-item {
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: space-between; /*new added*/
+  /* flex-direction: column-reverse;
+  justify-content: space-between;  */
   align-items: center;
-  padding: 0.7rem;
+  /* padding: 0.7rem; */
+  padding: 2rem;
   margin: 1.6rem auto;
   background-color: #c0aeae;
   border-radius: 12px;
@@ -48,12 +49,13 @@
   position: relative;
   /* width: 30px; */
   height: 50px;
-  top: -4rem;
+  top: 0rem;
+  left: 0rem;
 }
 .close_it.delete_expense {
   position: absolute;
-  left: -1.5rem;
-  top: 4rem;
+  left: -2rem;
+  top: -4rem;
   color: red;
 }
 #expense_list {
@@ -64,14 +66,14 @@
 }
 #category_div .category_innerdiv {
   position: absolute;
-  top:2.5rem;
+  top:0rem;
   padding: 0.5rem;
   width: 100%;
   text-align: center;
   color: rgb(243, 65, 65);
   font-weight: bolder;
 }
-@media (min-width: 500px) {
+@media (min-width: 580px) {
   .expense-item {
     flex-direction: row;
   }
@@ -92,7 +94,7 @@
   .close_it.delete_expense {
   position: absolute;
   left: -3rem;
-  top: 0rem;
+  top: -4rem;
   color: red;
   
 }

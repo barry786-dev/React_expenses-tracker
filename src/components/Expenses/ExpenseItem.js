@@ -15,7 +15,7 @@ const ExpenseItem = ({
   categories,
 }) => {
   const [editable, setEditable] = useState(false); // state will effect the contentEditable attribute in some of our html elements below
-  const [editTitle, setEditTitle] = useState('Edit'); // state to toggle the title of edit button so it can function difrently according to its title (either save the changes(if the title is Done)or start allow editing ifthe title is (Edit))
+  const [editTitle, setEditTitle] = useState('Edit'); // state to toggle the title of edit button so it can function diffrently according to its title (either save the changes(if the title is Done)or start allow editing ifthe title is (Edit))
   const [node, setNode] = useState(''); // will add string value ('h2' or 'span'  or 'div') to know to which element tag i need to send the focus and highlighting.
   const myTitle = useRef(null);
   const myAmount = useRef(null);
@@ -27,7 +27,7 @@ const ExpenseItem = ({
   //this is statment will check which node we are standing on it to return the foucs to it and highlight it if we try to leave it with wrong value
   if (editable) {
     if (node === 'h2') {
-      titleNode.focus();
+      titleNode.focus(); //The HTMLElement.focus() method sets focus on the specified element, if it can be focused. The focused element is the element which will receive keyboard and similar events by default.
       highlight(titleNode);
     } else if (node === 'span') {
       amountNode.focus();
@@ -37,7 +37,8 @@ const ExpenseItem = ({
       highlight(catogeryNode);
     }
   }
-
+  /* ****************************** */
+  /* ****************************** */
   const EditclickHandler = () => {
     if (editTitle === 'Edit') {
       setEditable(() => true);
@@ -85,11 +86,13 @@ const ExpenseItem = ({
       } else {
         setEditTitle(() => 'Edit');
         setEditable(() => false);
-        editExpense(newTitle, newAmount, newCategory, expense.id); //editExpense is a prop
+        editExpense(newTitle, newAmount, newCategory, expense.id); //editExpense is a prop will trigger editExpenseHandler() inside ExpenseApp.js line 116
       }
     }
   };
-
+  /* ****************************** */
+  /* ****************************** */
+  // dateEditingHandler is just a function to show meesage to the user if he tried to edit the date of expense.
   const dateEditingHandler = () => {
     if (editTitle === 'Done') {
       onError({
@@ -97,10 +100,13 @@ const ExpenseItem = ({
         message:
           'you can not change the date, you can change only the title or/and the amount if you atten to change the date you need to delete the expense and enter new one',
       });
-      titleNode.focus();
+      //titleNode.focus(); i left it to show that i do not nee it as the app wil render nd read it as default
     }
   };
+  /* ****************************** */
+  /* ****************************** */
   const deleteExpenseHandler = () => {
+    // modalDataDeleted is a function show up after an expense get deleted
     const modalDataDeleted = () => {
       onError({
         title: 'Data deleted successfully!',
@@ -110,6 +116,7 @@ const ExpenseItem = ({
         Date : ${expense.date}`,
       });
     };
+    // modalDataDeleteCancel is a function will show up if the user cancel delete action to comfort him.
     const modalDataDeleteCancel = () => {
       onError({
         title: 'Delete action is Cancelled!',
@@ -117,12 +124,14 @@ const ExpenseItem = ({
       });
     };
     if (editTitle === 'Done') {
+      //it will check if i am in edit mode then press it will onlc cancel editing and retrive the old data, nothing real will happen behind the sense REACT is not rendering the values. REACT is not so happy to ignore him here of course do not go arround the rulles if you are not sure what you are doing;
       setEditTitle('Edit');
       setEditable(false);
       myAmount.current.innerText = prevAmount;
       myTitle.current.innerText = prevTitle;
       myCatogery.current.innerText = prevCategory;
     } else if (editTitle === 'Edit') {
+      // here will work as expense deleter
       onError({
         title: 'Attention , Delete Action',
         message: 'Are you sure you want to delete completly this expense?',
@@ -133,6 +142,8 @@ const ExpenseItem = ({
       });
     }
   };
+  /* ****************************** */
+  /* ****************************** */
   return (
     <li id='expense_list'>
       <div id='category_div'>
@@ -162,8 +173,10 @@ const ExpenseItem = ({
         </div>
         <Button onClick={EditclickHandler} className='expense_button'>
           {editTitle}
+          {/* the name will be changed dynamiclyaccording to this bustton functionality */}
         </Button>
         <div id='delete_expense_wrapper'>
+          {/* this is the X button which function to delete and to cancel editing */}
           <div
             className='close_it delete_expense'
             onClick={deleteExpenseHandler}
@@ -179,10 +192,14 @@ export default ExpenseItem;
 //<p contentEditable='false'>$</p>;
 const highlight = (node) => {
   if (document.body.createTextRange) {
+    //The Document.createRange() method returns a new Range object.
+    //The Range interface represents a fragment of a document that can contain nodes and parts of text nodes.
     const range = document.body.createTextRange();
     range.moveToElementText(node);
     range.select();
   } else if (window.getSelection) {
+    //The Window.getSelection() method returns a Selection object representing the range of text selected by the user or the current position of the caret.
+    //A Selection object represents the range of text selected by the user or the current position of the caret.
     const selection = window.getSelection();
     const range = document.createRange();
     range.selectNodeContents(node);
@@ -192,6 +209,9 @@ const highlight = (node) => {
     console.warn('Could not select text in node: Unsupported browser.');
   }
 };
+
+
+
 
 /* let titleNode;
   let amountNode;

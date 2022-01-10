@@ -5,7 +5,7 @@ import './ExpensesFilter.css';
 
 const ExpensesFilter = ({ selected, onChangeFilter, mindate }) => {
   const dropdownChangeHandler = (event) => {
-    onChangeFilter(event.target.value); // onChangeFilter is props will trigger filterChangeHandler() inside ControlExpense.js
+    onChangeFilter(event.target.value); // onChangeFilter is props will trigger filterChangeHandler() inside ControlExpense.js pass the selected year value to it
   };
   // here is a code will generate dynamic dates inside the filter dropdown options using some calculations.
   const options = [...Array(new Date().getFullYear() - mindate + 1)];

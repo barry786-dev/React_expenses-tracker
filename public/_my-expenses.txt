@@ -1,17 +1,17 @@
 [
   {
-    "category": "furniture",
-    "title": "kitchen table",
-    "id": "1641672149586",
-    "amount": 185,
-    "date": "2021-09-08"
-  },
-  {
     "title": "new thing",
     "amount": 1000,
     "date": "2021-03-03",
     "id": "1641377995085",
     "category": "electronics"
+  },
+  {
+    "title": "black car",
+    "amount": 352,
+    "date": "2021-05-09",
+    "id": "1641825809605",
+    "category": "insurance"
   },
   {
     "title": "my daughter car",
@@ -25,6 +25,13 @@
     "date": "2021-06-15",
     "id": "1641666605719",
     "category": "grocery"
+  },
+  {
+    "category": "furniture",
+    "title": "kitchen table",
+    "id": "1641672149586",
+    "amount": 185,
+    "date": "2021-09-08"
   },
   {
     "title": "here is test",

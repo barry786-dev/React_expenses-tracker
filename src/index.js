@@ -7,6 +7,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+//The Object.assign() method copies all enumerable own properties from one or more source objects to a target object. It returns the modified target object.
 
   /* function setState(newState) {
     Object.assign(state, newState);
